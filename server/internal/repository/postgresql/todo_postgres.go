@@ -20,6 +20,16 @@ func (p *PostgresTodoRepo) Todos() []models.Todo {
 	return todos
 }
 
+func (p *PostgresTodoRepo) Todo(id int) (*models.Todo, error) {
+	var todo models.Todo
+	err := p.DB.Find(&todo, id).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return &todo, nil
+}
+
 func (p *PostgresTodoRepo) InsertTodo(todo *models.Todo) error {
 	res := p.DB.Create(todo)
 	return res.Error

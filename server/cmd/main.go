@@ -9,7 +9,7 @@ import (
 )
 
 type application struct {
-	service service.TodoService
+	todoService service.TodoService
 }
 
 func main() {
@@ -23,7 +23,7 @@ func main() {
 	todoRepo := repository.NewPostgresTodoRepo(dsn)
 	todoService := service.NewTodoService(todoRepo)
 
-	application := &application{service: todoService}
+	application := &application{todoService: todoService}
 	application.setupRoutes(fiberApp)
 
 	if err := fiberApp.Listen(":3000"); err != nil {

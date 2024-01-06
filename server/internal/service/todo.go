@@ -7,6 +7,7 @@ import (
 
 type TodoService interface {
 	Todos() []models.Todo
+	Todo(id int) (*models.Todo, error)
 	CreateTodo(m *models.Todo) error
 }
 
@@ -26,4 +27,8 @@ func (s *DefaultTodoService) CreateTodo(todo *models.Todo) error {
 
 func (s *DefaultTodoService) Todos() []models.Todo {
 	return s.repo.Todos()
+}
+
+func (s *DefaultTodoService) Todo(id int) (*models.Todo, error) {
+	return s.repo.Todo(id)
 }

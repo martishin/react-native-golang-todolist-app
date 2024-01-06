@@ -11,6 +11,7 @@ import (
 type TodoRepository interface {
 	Connection() *gorm.DB
 	Todos() []models.Todo
+	Todo(id int) (*models.Todo, error)
 	InsertTodo(m *models.Todo) error
 }
 
