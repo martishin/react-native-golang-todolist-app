@@ -4,6 +4,7 @@ import (
 	"flag"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/tty-monkey/react-native-golang-todolist-app/server/internal/repository/postgresql"
 	"github.com/tty-monkey/react-native-golang-todolist-app/server/internal/service"
 )
@@ -14,6 +15,7 @@ type application struct {
 
 func main() {
 	fiberApp := fiber.New()
+	fiberApp.Use(cors.New())
 
 	var dsn string
 	flag.StringVar(&dsn, "dsn", "host=localhost port=5432 user=postgres password=postgres dbname=todos "+
