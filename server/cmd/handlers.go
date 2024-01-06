@@ -58,6 +58,33 @@ func (application *application) getTodoByID(c *fiber.Ctx) error {
 	return c.JSON(todo)
 }
 
+func (application *application) deleteTodoByID(c *fiber.Ctx) error {
+	idStr := c.Params("id")
+
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		return invalidRequestFormat(c)
+	}
+
+	todo, err := application.todoService.TodoByID(id)
+	if err != nil {
+		return internalServerError(c)
+	}
+
+	if todo.ID == 0 {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"status":  "error",
+			"message": "Not found",
+		})
+	}
+
+	if err = application.todoService.DeleteTodo(todo); err != nil {
+		return internalServerError(c)
+	}
+
+	return c.SendStatus(fiber.StatusNoContent)
+}
+
 func (application *application) updateTodoByID(c *fiber.Ctx) error {
 	idStr := c.Params("id")
 

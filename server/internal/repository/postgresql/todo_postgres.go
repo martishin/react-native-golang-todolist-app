@@ -66,3 +66,8 @@ func (p *PostgresTodoRepo) UpdateTodo(todo *models.Todo) error {
 	res := p.DB.Save(todo)
 	return res.Error
 }
+
+func (p *PostgresTodoRepo) DeleteTodo(todo *models.Todo) error {
+	res := p.DB.Delete(todo)
+	return res.Error
+}

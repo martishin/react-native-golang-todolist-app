@@ -12,6 +12,7 @@ type TodoService interface {
 	TodoByID(id int) (*models.Todo, error)
 	CreateTodo(m *models.Todo) error
 	UpdateTodo(m *models.Todo) error
+	DeleteTodo(m *models.Todo) error
 }
 
 type DefaultTodoService struct {
@@ -20,6 +21,9 @@ type DefaultTodoService struct {
 
 var ErrTodoAlreadyExists = errors.New("todo already exists")
 var ErrTodoCreationError = errors.New("could not create todo")
+var ErrTodoUpdateError = errors.New("could not update todo")
+var ErrTodoDeleteError = errors.New("could not update todo")
+var ErrTodoFetchError = errors.New("could not fetch todo")
 
 func NewTodoService(repo repository.TodoRepository) *DefaultTodoService {
 	return &DefaultTodoService{
@@ -43,9 +47,23 @@ func (s *DefaultTodoService) Todos() []models.Todo {
 }
 
 func (s *DefaultTodoService) TodoByID(id int) (*models.Todo, error) {
-	return s.repo.TodoByID(id)
+	todo, err := s.repo.TodoByID(id)
+	if err != nil {
+		return nil, ErrTodoFetchError
+	}
+	return todo, nil
 }
 
 func (s *DefaultTodoService) UpdateTodo(todo *models.Todo) error {
-	return s.repo.UpdateTodo(todo)
+	if err := s.repo.UpdateTodo(todo); err != nil {
+		return ErrTodoUpdateError
+	}
+	return nil
+}
+
+func (s *DefaultTodoService) DeleteTodo(todo *models.Todo) error {
+	if err := s.repo.DeleteTodo(todo); err != nil {
+		return ErrTodoDeleteError
+	}
+	return nil
 }

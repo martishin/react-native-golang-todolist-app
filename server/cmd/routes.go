@@ -7,4 +7,5 @@ func (application *application) setupRoutes(app *fiber.App) {
 	app.Post("/todos", application.createTodo)
 	app.Get("/todos/:id", application.getTodoByID)
 	app.Patch("/todos/:id", application.updateTodoByID)
+	app.Delete("/todos/:id", application.deleteTodoByID)
 }

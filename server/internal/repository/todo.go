@@ -13,6 +13,7 @@ type TodoRepository interface {
 	TodoByID(id int) (*models.Todo, error)
 	InsertTodo(m *models.Todo) error
 	UpdateTodo(m *models.Todo) error
+	DeleteTodo(m *models.Todo) error
 }
 
 var ErrTodoAlreadyExists = errors.New("todo already exists")
