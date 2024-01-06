@@ -4,7 +4,7 @@ import (
 	"flag"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/tty-monkey/react-native-golang-todolist-app/server/internal/repository"
+	"github.com/tty-monkey/react-native-golang-todolist-app/server/internal/repository/postgresql"
 	"github.com/tty-monkey/react-native-golang-todolist-app/server/internal/service"
 )
 
@@ -20,7 +20,7 @@ func main() {
 		"sslmode=disable timezone=UTC connect_timeout=5", "Postgres connection string")
 	flag.Parse()
 
-	todoRepo := repository.NewPostgresTodoRepo(dsn)
+	todoRepo := postgresql.NewPostgresTodoRepo(dsn)
 	todoService := service.NewTodoService(todoRepo)
 
 	application := &application{todoService: todoService}

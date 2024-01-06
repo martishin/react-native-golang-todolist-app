@@ -1,12 +1,29 @@
 package postgresql
 
 import (
+	"errors"
+
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/tty-monkey/react-native-golang-todolist-app/server/internal/models"
+	"github.com/tty-monkey/react-native-golang-todolist-app/server/internal/repository"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 type PostgresTodoRepo struct {
 	DB *gorm.DB
+}
+
+func NewPostgresTodoRepo(dsn string) *PostgresTodoRepo {
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect database")
+	}
+	if err = db.AutoMigrate(&models.Todo{}); err != nil {
+		panic("failed to apply migrations")
+	}
+
+	return &PostgresTodoRepo{DB: db}
 }
 
 func (p *PostgresTodoRepo) Connection() *gorm.DB {
@@ -20,7 +37,7 @@ func (p *PostgresTodoRepo) Todos() []models.Todo {
 	return todos
 }
 
-func (p *PostgresTodoRepo) Todo(id int) (*models.Todo, error) {
+func (p *PostgresTodoRepo) TodoByID(id int) (*models.Todo, error) {
 	var todo models.Todo
 	err := p.DB.Find(&todo, id).Error
 	if err != nil {
@@ -31,6 +48,21 @@ func (p *PostgresTodoRepo) Todo(id int) (*models.Todo, error) {
 }
 
 func (p *PostgresTodoRepo) InsertTodo(todo *models.Todo) error {
-	res := p.DB.Create(todo)
+	err := p.DB.Create(todo).Error
+
+	var pgErr *pgconn.PgError
+	if errors.As(err, &pgErr) {
+		//nolint:gocritic // left for illustration purposes
+		switch pgErr.Code {
+		case "23505":
+			return repository.ErrTodoAlreadyExists
+		}
+	}
+
+	return nil
+}
+
+func (p *PostgresTodoRepo) UpdateTodo(todo *models.Todo) error {
+	res := p.DB.Save(todo)
 	return res.Error
 }
