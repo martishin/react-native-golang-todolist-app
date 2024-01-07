@@ -3,7 +3,7 @@ React Native todo application with backend written in Go
 
 <div>
   <img src="https://github.com/tty-monkey/react-native-golang-todolist-app/blob/main/ios.png" width="200" style="display: inline-block; margin-right: 10px;"/>
-  <img src="https://github.com/tty-monkey/react-native-golang-todolist-app/blob/main/android.png" width="200" style="display: inline-block;"/>
+  <img src="https://github.com/tty-monkey/react-native-golang-todolist-app/blob/main/android.png" width="195" style="display: inline-block;"/>
 </div>
 
 ## Running Locally
