@@ -1,5 +1,6 @@
 import Todo from "../models/Todo"
 
+// replace with server IP address
 const baseUrl = "http://192.168.178.150:3000/todos"
 
 export const getTodos = async (): Promise<Todo[]> => {
