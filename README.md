@@ -9,10 +9,10 @@ React Native todo application with backend written in Go
 ## Running Locally
 ### Server
 * Navigate to server folder: `cd server`
-* Run PostgreSQL `make run-postgres`
+* Run PostgreSQL: `make run-postgres`
 * Start the server: `cd cmd && go run .`
 * API will be available at http://localhost:3000/
 ### Client
 * Navigate to client folder: `cd app`
-* Install dependencies `npm install`
-* Start the client `npm run start`
+* Install dependencies: `npm install`
+* Start expo: `npm run start`
