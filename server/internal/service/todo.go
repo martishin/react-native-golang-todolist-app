@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"sort"
 
 	"github.com/tty-monkey/react-native-golang-todolist-app/server/internal/models"
 	"github.com/tty-monkey/react-native-golang-todolist-app/server/internal/repository"
@@ -43,7 +44,13 @@ func (s *DefaultTodoService) CreateTodo(todo *models.Todo) error {
 }
 
 func (s *DefaultTodoService) Todos() []models.Todo {
-	return s.repo.Todos()
+	todos := s.repo.Todos()
+	sort.Slice(
+		todos, func(i, j int) bool {
+			return todos[i].ID < todos[j].ID
+		},
+	)
+	return todos
 }
 
 func (s *DefaultTodoService) TodoByID(id int) (*models.Todo, error) {
