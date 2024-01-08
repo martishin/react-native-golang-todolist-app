@@ -1,30 +1,30 @@
-version: '3.8'
+version: "3.8"
 
 services:
-    app:
+    app-todolist:
         image: todolist-app-server
         build:
             context: .
             dockerfile: Dockerfile
-        restart: on-failure
+        restart: "on-failure"
         environment:
-            DB_HOST: db
+            DB_HOST: db-todolist-app
         ports:
             - "3000:3000"
         depends_on:
-            - db
+            - db-todolist-app
 
-    db:
-        image: 'postgres:16.1'
-        restart: no
+    db-todolist-app:
+        image: "postgres:16.1"
+        restart: "no"
         environment:
             POSTGRES_USER: postgres
             POSTGRES_PASSWORD: postgres
             POSTGRES_DB: todos
         ports:
-            - '5432:5432'
+            - "5432:5432"
         volumes:
-            - postgres-data-react-native-golang-todolist-app:/var/lib/postgresql/data/
+            - postgres-data-todolist-app:/var/lib/postgresql/data/
 
 volumes:
-    postgres-data-react-native-golang-todolist-app:
+    postgres-data-todolist-app:
