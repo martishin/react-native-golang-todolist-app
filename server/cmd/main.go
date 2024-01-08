@@ -2,6 +2,8 @@ package main
 
 import (
 	"flag"
+	"fmt"
+	"os"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -17,9 +19,14 @@ func main() {
 	fiberApp := fiber.New()
 	fiberApp.Use(cors.New())
 
+	dbHost := os.Getenv("DB_HOST")
+	if dbHost == "" {
+		dbHost = "localhost"
+	}
+
 	var dsn string
-	flag.StringVar(&dsn, "dsn", "host=localhost port=5432 user=postgres password=postgres dbname=todos "+
-		"sslmode=disable timezone=UTC connect_timeout=5", "Postgres connection string")
+	flag.StringVar(&dsn, "dsn", fmt.Sprintf("host=%s port=5432 user=postgres password=postgres dbname=todos "+
+		"sslmode=disable timezone=UTC connect_timeout=5", dbHost), "Postgres connection string")
 	flag.Parse()
 
 	todoRepo := postgresql.NewPostgresTodoRepo(dsn)

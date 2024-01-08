@@ -1,6 +1,19 @@
 version: '3.8'
 
 services:
+    app:
+        image: todolist-app-server
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: on-failure
+        environment:
+            DB_HOST: db
+        ports:
+            - "3000:3000"
+        depends_on:
+            - db
+
     db:
         image: 'postgres:16.1'
         restart: no
